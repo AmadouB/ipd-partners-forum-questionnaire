@@ -611,8 +611,33 @@ function goPage(n) {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-function submitForm() {
-  console.log('Survey data:', JSON.stringify(data, null, 2));
+async function submitForm() {
+  const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwY-mpbJLjlmpqCNcO70flREvLj2oSe5lHcFuandw3WVDe7TexY5LXUM_K5QKgbq-SU2g/exec';
+
+  const btn = document.querySelector('.btn-gold');
+  if (btn) { btn.disabled = true; btn.textContent = '⏳ Envoi...'; }
+
+  // Add metadata
+  data._timestamp = new Date().toISOString();
+  data._lang = lang;
+
+  // Convert arrays to strings for Google Sheets
+  const payload = {};
+  for (const [k, v] of Object.entries(data)) {
+    payload[k] = Array.isArray(v) ? v.join(', ') : v;
+  }
+
+  try {
+    await fetch(GOOGLE_SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+  } catch (e) {
+    console.warn('Submit error:', e);
+  }
+
   const c = document.getElementById('formContainer');
   c.innerHTML = `<div class="section thank-you"><div class="icon">🎉</div><h2>${T.thankTitle[lang]}</h2><p>${T.thankText[lang]}</p></div>`;
   document.getElementById('progressFill').style.width = '100%';
