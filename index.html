@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>IPD Strategic Partners Forum 2026 – Survey</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;900&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ipd-teal: #0089D0;
+  --ipd-dark: #052a62;
+  --ipd-accent: #86B4DD;
+  --ipd-gold: #ef7a16;
+  --bg: #F2F3F5;
+  --card: #FFFFFF;
+  --text: #000000;
+  --muted: #052a62;
+  --border: #D7D8DB;
+  --success: #2E7D32;
+  --radius: 14px;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  font-family: 'Lato', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100dvh;
+  -webkit-font-smoothing: antialiased;
+}
+
+.hero {
+  background: linear-gradient(135deg, #052a62 0%, #0089D0 60%, #86B4DD 100%);
+  color: #fff;
+  padding: 2.5rem 1.5rem 2rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='30' cy='30' r='1.5' fill='rgba(255,255,255,0.07)'/%3E%3C/svg%3E");
+  pointer-events: none;
+}
+.hero h1 {
+  font-family: 'Poppins', sans-serif; font-weight: 700;
+  font-size: 1.45rem;
+  font-weight: 700;
+  line-height: 1.3;
+  margin-bottom: .5rem;
+  position: relative;
+}
+.hero .subtitle {
+  font-size: .82rem;
+  opacity: .85;
+  line-height: 1.5;
+  max-width: 520px;
+  margin: 0 auto;
+  position: relative;
+}
+.hero .date-badge {
+  display: inline-block;
+  background: rgba(255,255,255,.15);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255,255,255,.2);
+  padding: .3rem .9rem;
+  border-radius: 20px;
+  font-size: .72rem;
+  font-weight: 600;
+  letter-spacing: .04em;
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.lang-toggle {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  display: flex;
+  gap: 2px;
+  background: rgba(255,255,255,.12);
+  border-radius: 8px;
+  overflow: hidden;
+  z-index: 10;
+}
+.lang-btn {
+  background: transparent;
+  border: none;
+  color: rgba(255,255,255,.6);
+  font: 600 .72rem/1 'Poppins', sans-serif;
+  padding: .4rem .7rem;
+  cursor: pointer;
+  transition: all .2s;
+}
+.lang-btn.active {
+  background: rgba(255,255,255,.22);
+  color: #fff;
+}
+
+.container {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 0 1rem 3rem;
+}
+
+.progress-bar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--card);
+  border-bottom: 1px solid var(--border);
+  padding: .7rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: .8rem;
+}
+.progress-track {
+  flex: 1;
+  height: 5px;
+  background: var(--border);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #0089D0, #052a62);
+  border-radius: 3px;
+  transition: width .4s ease;
+}
+.progress-text {
+  font-size: .72rem;
+  font-weight: 600;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.section {
+  background: var(--card);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  padding: 1.5rem;
+  margin-top: 1rem;
+  animation: fadeUp .4s ease both;
+}
+@keyframes fadeUp {
+  from { opacity:0; transform: translateY(12px); }
+  to { opacity:1; transform: translateY(0); }
+}
+.section-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--ipd-teal);
+  color: #fff;
+  font-size: .7rem;
+  font-weight: 700;
+  margin-bottom: .6rem;
+}
+.section h2 {
+  font-family: 'Poppins', sans-serif; font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--ipd-dark);
+  margin-bottom: .3rem;
+}
+.section .section-desc {
+  font-size: .78rem;
+  color: var(--muted);
+  margin-bottom: 1.2rem;
+  line-height: 1.5;
+}
+
+.field { margin-bottom: 1.3rem; }
+.field:last-child { margin-bottom: 0; }
+.field label {
+  display: block;
+  font-weight: 600;
+  font-size: .82rem;
+  margin-bottom: .5rem;
+  color: var(--text);
+}
+.field label .req { color: #E53935; margin-left: 2px; }
+
+input[type="text"], input[type="email"], textarea, select {
+  width: 100%;
+  padding: .65rem .85rem;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  font: 400 .85rem/1.4 'Lato', sans-serif;
+  color: var(--text);
+  background: #fff;
+  transition: border-color .2s, box-shadow .2s;
+  outline: none;
+}
+input:focus, textarea:focus, select:focus {
+  border-color: var(--ipd-teal);
+  box-shadow: 0 0 0 3px rgba(0,151,167,.1);
+}
+textarea { resize: vertical; min-height: 80px; }
+select { cursor: pointer; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235F7A85' stroke-width='1.5' fill='none'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right .85rem center; padding-right: 2.2rem; }
+
+.chips { display: flex; flex-wrap: wrap; gap: .45rem; }
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  padding: .42rem .8rem;
+  border: 1.5px solid var(--border);
+  border-radius: 20px;
+  font-size: .78rem;
+  cursor: pointer;
+  transition: all .2s;
+  user-select: none;
+  background: #fff;
+}
+.chip:hover { border-color: var(--ipd-teal); background: rgba(0,151,167,.04); }
+.chip.selected {
+  border-color: var(--ipd-teal);
+  background: rgba(0,151,167,.08);
+  color: var(--ipd-dark);
+  font-weight: 600;
+}
+.chip .check {
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  border: 1.5px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  transition: all .2s;
+  flex-shrink: 0;
+}
+.chip.selected .check {
+  background: var(--ipd-teal);
+  border-color: var(--ipd-teal);
+}
+.chip.selected .check::after {
+  content: '✓';
+  color: #fff;
+  font-size: .6rem;
+  font-weight: 700;
+}
+
+.likert {
+  display: flex;
+  justify-content: space-between;
+  gap: .3rem;
+  margin-top: .3rem;
+}
+.likert-opt {
+  flex: 1;
+  text-align: center;
+  cursor: pointer;
+}
+.likert-circle {
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: .85rem;
+  margin: 0 auto .3rem;
+  transition: all .2s;
+  color: var(--muted);
+}
+.likert-opt:hover .likert-circle { border-color: var(--ipd-teal); color: var(--ipd-teal); }
+.likert-opt.selected .likert-circle {
+  background: var(--ipd-teal);
+  border-color: var(--ipd-teal);
+  color: #fff;
+}
+.likert-label { font-size: .62rem; color: var(--muted); line-height: 1.2; }
+
+.radio-group { display: flex; flex-direction: column; gap: .4rem; }
+.radio-opt {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  padding: .55rem .8rem;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all .2s;
+  font-size: .82rem;
+}
+.radio-opt:hover { border-color: var(--ipd-teal); background: rgba(0,151,167,.03); }
+.radio-opt.selected { border-color: var(--ipd-teal); background: rgba(0,151,167,.06); font-weight: 600; }
+.radio-dot {
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  position: relative;
+  flex-shrink: 0;
+  transition: all .2s;
+}
+.radio-opt.selected .radio-dot {
+  border-color: var(--ipd-teal);
+}
+.radio-opt.selected .radio-dot::after {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  border-radius: 50%;
+  background: var(--ipd-teal);
+}
+
+.nav-buttons {
+  display: flex;
+  gap: .6rem;
+  margin-top: 1.5rem;
+}
+.btn {
+  flex: 1;
+  padding: .75rem;
+  border-radius: 10px;
+  font: 600 .85rem/1 'Poppins', sans-serif;
+  cursor: pointer;
+  transition: all .2s;
+  border: none;
+  text-align: center;
+}
+.btn-outline {
+  background: #fff;
+  border: 1.5px solid var(--border);
+  color: var(--muted);
+}
+.btn-outline:hover { border-color: var(--ipd-teal); color: var(--ipd-teal); }
+.btn-primary {
+  background: linear-gradient(135deg, #0089D0, #052a62);
+  color: #fff;
+}
+.btn-primary:hover { filter: brightness(1.08); transform: translateY(-1px); }
+.btn-primary:disabled { opacity:.5; pointer-events:none; }
+.btn-gold {
+  background: linear-gradient(135deg, #ef7a16, #d06a10);
+  color: #fff;
+}
+
+.thank-you {
+  text-align: center;
+  padding: 3rem 1.5rem;
+}
+.thank-you .icon { font-size: 3rem; margin-bottom: 1rem; }
+.thank-you h2 {
+  font-family: 'Poppins', sans-serif; font-weight: 700;
+  font-size: 1.4rem;
+  color: var(--ipd-dark);
+  margin-bottom: .5rem;
+}
+.thank-you p { color: var(--muted); font-size: .85rem; line-height: 1.6; }
+
+.hidden { display: none !important; }
+
+@media (max-width: 480px) {
+  .hero { padding: 2rem 1rem 1.5rem; }
+  .hero h1 { font-size: 1.2rem; }
+  .section { padding: 1.2rem; }
+  .likert-circle { width: 34px; height: 34px; font-size: .8rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <button class="lang-toggle" aria-label="Language">
+    <button class="lang-btn active" onclick="setLang('fr')">FR</button>
+    <button class="lang-btn" onclick="setLang('en')">EN</button>
+  </button>
+  <div class="date-badge">9 APRIL 2026 · BRUSSELS & DAKAR</div>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 80" style="max-width:220px;width:55%;margin:0.6rem auto;display:block;position:relative;" fill="white">
+  <!-- Globe -->
+  <g transform="translate(10,5) scale(0.85)">
+    <circle cx="42" cy="42" r="34" fill="none" stroke="white" stroke-width="3"/>
+    <ellipse cx="42" cy="42" rx="18" ry="34" fill="none" stroke="white" stroke-width="2.2"/>
+    <line x1="8" y1="42" x2="76" y2="42" stroke="white" stroke-width="2"/>
+    <path d="M12 25 Q42 32 72 25" fill="none" stroke="white" stroke-width="1.8"/>
+    <path d="M12 58 Q42 52 72 58" fill="none" stroke="white" stroke-width="1.8"/>
+    <line x1="42" y1="8" x2="42" y2="76" stroke="white" stroke-width="2"/>
+    <!-- Cross/Pasteur mark -->
+    <line x1="42" y1="20" x2="42" y2="64" stroke="white" stroke-width="4"/>
+    <line x1="24" y1="42" x2="60" y2="42" stroke="white" stroke-width="4"/>
+  </g>
+  <!-- Text -->
+  <text x="95" y="28" font-family="Poppins,sans-serif" font-weight="900" font-size="22" letter-spacing="1">INSTITUT</text>
+  <text x="95" y="52" font-family="Poppins,sans-serif" font-weight="900" font-size="22" letter-spacing="1">PASTEUR</text>
+  <text x="155" y="72" font-family="Lato,sans-serif" font-weight="400" font-size="16"><tspan font-style="italic">de </tspan><tspan font-weight="700">Dakar</tspan></text>
+</svg>
+  <h1 id="heroTitle">Questionnaire Partenaires Stratégiques</h1>
+  <div class="subtitle" id="heroSub">Pré-Forum sur le Développement et la Production de Vaccins – Institut Pasteur de Dakar</div>
+</div>
+
+<div class="progress-bar">
+  <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:20%"></div></div>
+  <div class="progress-text" id="progressText">1 / 5</div>
+</div>
+
+<div class="container" id="formContainer"></div>
+
+<script>
+let lang = 'fr';
+let currentPage = 0;
+const data = {};
+
+const T = {
+  heroTitle: { fr: 'Questionnaire Partenaires Stratégiques', en: 'Strategic Partners Survey' },
+  heroSub: { fr: 'Pré-Forum sur le Développement et la Production de Vaccins – Institut Pasteur de Dakar', en: 'Pre-Forum on Vaccine Development & Production – Institut Pasteur de Dakar' },
+  prev: { fr: 'Précédent', en: 'Previous' },
+  next: { fr: 'Suivant', en: 'Next' },
+  submit: { fr: 'Soumettre', en: 'Submit' },
+  reqField: { fr: 'Obligatoire', en: 'Required' },
+  selectMax: { fr: 'Sélectionnez jusqu\'à 3 priorités', en: 'Select up to 3 priorities' },
+  selectMulti: { fr: 'Sélection multiple possible', en: 'Multiple selection allowed' },
+  thankTitle: { fr: 'Merci pour votre contribution !', en: 'Thank you for your input!' },
+  thankText: { fr: 'Vos réponses alimenteront la session de clôture et la préparation du Forum de juin 2026.', en: 'Your responses will inform the closing session and the preparation of the June 2026 Forum.' },
+};
+
+const pages = [
+  // PAGE 1: Identification
+  {
+    num: 1,
+    title: { fr: 'Identification du Partenaire', en: 'Partner Identification' },
+    desc: { fr: 'Informations permettant de contextualiser vos retours.', en: 'Information to contextualize your feedback.' },
+    fields: [
+      { id: 'org', type: 'text', label: { fr: 'Organisation', en: 'Organization' }, req: true, placeholder: { fr: 'Nom de votre organisation', en: 'Your organization name' } },
+      { id: 'name', type: 'text', label: { fr: 'Nom et prénom du répondant', en: 'Respondent full name' }, req: false, placeholder: { fr: 'Facultatif', en: 'Optional' } },
+      { id: 'email', type: 'email', label: { fr: 'Adresse e-mail', en: 'Email address' }, req: false, placeholder: { fr: 'Pour le suivi post-forum (facultatif)', en: 'For post-forum follow-up (optional)' } },
+      { id: 'category', type: 'select', label: { fr: 'Catégorie de partenaire', en: 'Partner category' }, req: true, options: [
+        { value: '', label: { fr: '— Sélectionner —', en: '— Select —' } },
+        { value: 'team_europe', label: { fr: 'Team Europe (DG HERA, BEI, INTPA, AFD, KFW, GIZ…)', en: 'Team Europe (DG HERA, EIB, INTPA, AFD, KFW, GIZ…)' } },
+        { value: 'dfi', label: { fr: 'Institution Financière de Développement (BAD, SFI, DFC, BID, BOAD…)', en: 'Development Finance Institution (AfDB, IFC, DFC, IsDB, BOAD…)' } },
+        { value: 'foundation', label: { fr: 'Fondation Philanthropique (Gates Foundation, Wellcome, Mastercard Fdn)', en: 'Philanthropic Foundation (Gates Foundation, Wellcome, Mastercard Fdn)' } },
+        { value: 'technical', label: { fr: 'Agence Technique / Santé Mondiale (FCDO, CEPI, MedAccess, OMS…)', en: 'Technical / Global Health Agency (FCDO, CEPI, MedAccess, WHO…)' } },
+        { value: 'private', label: { fr: 'Secteur privé / Conseil', en: 'Private Sector / Advisory' } },
+        { value: 'other', label: { fr: 'Autre', en: 'Other' } },
+      ]},
+      { id: 'participation', type: 'radio', label: { fr: 'Mode de participation', en: 'Participation mode' }, req: true, options: [
+        { value: 'brussels', label: { fr: 'En présentiel – Bruxelles', en: 'In person – Brussels' } },
+        { value: 'dakar', label: { fr: 'En ligne depuis l\'IPD Dakar', en: 'Online from IPD Dakar' } },
+        { value: 'remote', label: { fr: 'En ligne – autre lieu', en: 'Online – other location' } },
+      ]},
+    ]
+  },
+  // PAGE 2: Alignement stratégique
+  {
+    num: 2,
+    title: { fr: 'Alignement & Vision Stratégique', en: 'Strategic Alignment & Vision' },
+    desc: { fr: 'Évaluez l\'adéquation avec la feuille de route 2026-2030 de l\'IPD.', en: 'Assess alignment with IPD\'s 2026-2030 roadmap.' },
+    fields: [
+      { id: 'alignment', type: 'likert', label: { fr: 'Dans quelle mesure la feuille de route 2026-2030 de l\'IPD est-elle alignée avec les priorités de votre institution ?', en: 'How aligned is IPD\'s 2026-2030 roadmap with your institution\'s priorities?' }, req: true,
+        low: { fr: 'Pas aligné', en: 'Not aligned' }, high: { fr: 'Très aligné', en: 'Fully aligned' } },
+      { id: 'priorities', type: 'chips', label: { fr: 'Programmes phares prioritaires pour votre institution (max. 3)', en: 'Priority flagship programs for your institution (max. 3)' }, req: true, max: 3, options: [
+        { value: 'yf', label: { fr: '🟡 Vaccin Fièvre Jaune (AfricAmaril)', en: '🟡 Yellow Fever Vaccine (AfricAmaril)' } },
+        { value: 'mr', label: { fr: '🔴 Vaccin Rougeole-Rubéole (MADIBA)', en: '🔴 Measles-Rubella Vaccine (MADIBA)' } },
+        { value: 'outbreak', label: { fr: '🧬 Vaccins épidémiques (Marburg, Lassa, RVF)', en: '🧬 Outbreak Vaccines (Marburg, Lassa, RVF)' } },
+        { value: 'dx', label: { fr: '🔬 Diagnostics rapides (DIATROPIX)', en: '🔬 Rapid Diagnostics (DIATROPIX)' } },
+        { value: 'workforce', label: { fr: '🎓 Formation & Main-d\'œuvre (Africa STARS / Training Hub)', en: '🎓 Workforce & Training (Africa STARS / Training Hub)' } },
+        { value: 'surveillance', label: { fr: '📡 Surveillance régionale (Système 4S)', en: '📡 Regional Surveillance (4S System)' } },
+        { value: 'clinical', label: { fr: '🏥 Essais cliniques & Plateforme réglementaire', en: '🏥 Clinical Trials & Regulatory Platform' } },
+      ]},
+      { id: 'alignment_comment', type: 'textarea', label: { fr: 'Commentaires sur l\'alignement stratégique', en: 'Comments on strategic alignment' }, req: false, placeholder: { fr: 'Précisions, nuances, domaines de convergence…', en: 'Details, nuances, areas of convergence…' } },
+    ]
+  },
+  // PAGE 3: Durabilité & Financement
+  {
+    num: 3,
+    title: { fr: 'Durabilité & Modèles de Financement', en: 'Sustainability & Financing Models' },
+    desc: { fr: 'Identifier les leviers pour la viabilité industrielle et le plan d\'affaires MADIBA 2026-2030.', en: 'Identify levers for industrial viability and the MADIBA 2026-2030 business plan.' },
+    fields: [
+      { id: 'critical_factor', type: 'radio', label: { fr: 'Facteur le plus critique pour la réussite du business plan MADIBA 2026-2030 :', en: 'Most critical factor for MADIBA 2026-2030 business plan success:' }, req: true, options: [
+        { value: 'market', label: { fr: 'Accès au marché & garantie de la demande régionale', en: 'Market access & regional demand assurance' } },
+        { value: 'regulatory', label: { fr: 'Homologations réglementaires (OMS / autorités nationales)', en: 'Regulatory approvals (WHO / national authorities)' } },
+        { value: 'cost', label: { fr: 'Optimisation des coûts de production industrielle', en: 'Industrial production cost optimization' } },
+        { value: 'workforce_cap', label: { fr: 'Capacités en ressources humaines spécialisées', en: 'Specialized human resource capabilities' } },
+        { value: 'governance', label: { fr: 'Gouvernance institutionnelle & cadre partenarial', en: 'Institutional governance & partnership framework' } },
+      ]},
+      { id: 'financing', type: 'chips', label: { fr: 'Outils de financement les plus adaptés pour la prochaine phase :', en: 'Most suitable financing instruments for the next phase:' }, req: true, max: 3, options: [
+        { value: 'grants', label: { fr: 'Subventions directes (Grants)', en: 'Direct Grants' } },
+        { value: 'blended', label: { fr: 'Financements mixtes (Blended finance)', en: 'Blended Finance' } },
+        { value: 'amc', label: { fr: 'Garanties d\'achat / AMC', en: 'Advance Market Commitments / AMC' } },
+        { value: 'ta', label: { fr: 'Assistance technique spécialisée', en: 'Specialized Technical Assistance' } },
+        { value: 'equity', label: { fr: 'Prise de participation / investissement', en: 'Equity / Investment' } },
+        { value: 'debt', label: { fr: 'Prêts concessionnels / lignes de crédit', en: 'Concessional loans / Credit lines' } },
+      ]},
+      { id: 'financing_comment', type: 'textarea', label: { fr: 'Précisions sur vos mécanismes de financement ou contraintes budgétaires', en: 'Details on your financing mechanisms or budget constraints' }, req: false, placeholder: { fr: 'Enveloppes disponibles, cycles de programmation, conditions…', en: 'Available envelopes, programming cycles, conditions…' } },
+    ]
+  },
+  // PAGE 4: Engagement & Feuille de route
+  {
+    num: 4,
+    title: { fr: 'Engagement & Feuille de Route Commune', en: 'Engagement & Joint Roadmap' },
+    desc: { fr: 'Préparer l\'identification des 5-7 priorités partagées et des champions pour juin 2026.', en: 'Prepare the identification of 5-7 shared priorities and champions for June 2026.' },
+    fields: [
+      { id: 'champion', type: 'radio', label: { fr: 'Votre organisation serait-elle prête à être "champion" d\'une priorité partagée ?', en: 'Would your organization be willing to champion a shared priority?' }, req: true, options: [
+        { value: 'yes', label: { fr: '✅ Oui, nous sommes prêts', en: '✅ Yes, we are ready' } },
+        { value: 'discussing', label: { fr: '💬 En cours de discussion interne', en: '💬 Under internal discussion' } },
+        { value: 'no', label: { fr: '❌ Pas à ce stade', en: '❌ Not at this stage' } },
+      ]},
+      { id: 'champion_area', type: 'textarea', label: { fr: 'Si oui, dans quel domaine souhaiteriez-vous jouer ce rôle ?', en: 'If yes, in which area would you like to play this role?' }, req: false, placeholder: { fr: 'Ex : transfert technologique, accès marché, formation…', en: 'E.g.: technology transfer, market access, training…' } },
+      { id: 'risk', type: 'radio', label: { fr: 'Quel risque stratégique vous semble le plus important à mitiger ?', en: 'Which strategic risk seems most important to mitigate?' }, req: true, options: [
+        { value: 'demand', label: { fr: 'Incertitude sur la demande et les engagements d\'achat', en: 'Demand uncertainty and purchase commitments' } },
+        { value: 'regulatory_delay', label: { fr: 'Retards dans les processus réglementaires', en: 'Delays in regulatory processes' } },
+        { value: 'coordination', label: { fr: 'Fragmentation / manque de coordination entre partenaires', en: 'Fragmentation / lack of partner coordination' } },
+        { value: 'financial_gap', label: { fr: 'Déficit de financement pour les investissements critiques', en: 'Funding gap for critical investments' } },
+        { value: 'tech_transfer', label: { fr: 'Risques liés aux transferts technologiques', en: 'Technology transfer risks' } },
+      ]},
+    ]
+  },
+  // PAGE 5: Attentes & Synthèse
+  {
+    num: 5,
+    title: { fr: 'Attentes & Contributions', en: 'Expectations & Contributions' },
+    desc: { fr: 'Vos attentes pour le Forum de juin 2026 et les prochaines étapes.', en: 'Your expectations for the June 2026 Forum and next steps.' },
+    fields: [
+      { id: 'expectation', type: 'textarea', label: { fr: 'Quelle annonce ou résultat concret attendez-vous du Forum de juin 2026 ?', en: 'What announcement or concrete outcome do you expect from the June 2026 Forum?' }, req: true, placeholder: { fr: 'Engagements financiers, feuille de route signée, nouveau mécanisme de coordination…', en: 'Financial commitments, signed roadmap, new coordination mechanism…' } },
+      { id: 'prereads', type: 'likert', label: { fr: 'Qualité et utilité des documents préparatoires (pre-reads) fournis par l\'IPD :', en: 'Quality and usefulness of IPD pre-reads provided:' }, req: true,
+        low: { fr: 'Insuffisant', en: 'Insufficient' }, high: { fr: 'Excellent', en: 'Excellent' } },
+      { id: 'info_needs', type: 'textarea', label: { fr: 'Informations complémentaires souhaitées avant le Forum de juin :', en: 'Additional information needed before the June Forum:' }, req: false, placeholder: { fr: 'Données financières détaillées, projections de marché, calendrier réglementaire…', en: 'Detailed financial data, market projections, regulatory timeline…' } },
+      { id: 'overall_comment', type: 'textarea', label: { fr: 'Commentaire libre / Suggestion', en: 'Open comment / Suggestion' }, req: false, placeholder: { fr: 'Tout autre commentaire ou suggestion pour l\'IPD', en: 'Any other comment or suggestion for IPD' } },
+    ]
+  },
+];
+
+function setLang(l) {
+  lang = l;
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.textContent.trim() === l.toUpperCase()));
+  document.getElementById('heroTitle').textContent = T.heroTitle[l];
+  document.getElementById('heroSub').textContent = T.heroSub[l];
+  render();
+}
+
+function render() {
+  const p = pages[currentPage];
+  const pct = ((currentPage + 1) / pages.length * 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressText').textContent = `${currentPage + 1} / ${pages.length}`;
+
+  let html = `<div class="section"><div class="section-num">${p.num}</div><h2>${p.title[lang]}</h2><div class="section-desc">${p.desc[lang]}</div>`;
+
+  p.fields.forEach(f => {
+    const val = data[f.id];
+    html += `<div class="field"><label>${f.label[lang]}${f.req ? '<span class="req">*</span>' : ''}</label>`;
+
+    if (f.type === 'text' || f.type === 'email') {
+      html += `<input type="${f.type}" placeholder="${f.placeholder?.[lang]||''}" value="${val||''}" onchange="data['${f.id}']=this.value">`;
+    } else if (f.type === 'textarea') {
+      html += `<textarea placeholder="${f.placeholder?.[lang]||''}" onchange="data['${f.id}']=this.value">${val||''}</textarea>`;
+    } else if (f.type === 'select') {
+      html += `<select onchange="data['${f.id}']=this.value">`;
+      f.options.forEach(o => {
+        html += `<option value="${o.value}" ${val===o.value?'selected':''}>${o.label[lang]}</option>`;
+      });
+      html += `</select>`;
+    } else if (f.type === 'likert') {
+      html += `<div class="likert">`;
+      for (let i = 1; i <= 5; i++) {
+        const sel = val == i ? 'selected' : '';
+        let lbl = '';
+        if (i === 1) lbl = f.low[lang];
+        else if (i === 5) lbl = f.high[lang];
+        html += `<div class="likert-opt ${sel}" onclick="data['${f.id}']=${i};render()"><div class="likert-circle">${i}</div><div class="likert-label">${lbl}</div></div>`;
+      }
+      html += `</div>`;
+    } else if (f.type === 'radio') {
+      html += `<div class="radio-group">`;
+      f.options.forEach(o => {
+        const sel = val === o.value ? 'selected' : '';
+        html += `<div class="radio-opt ${sel}" onclick="data['${f.id}']='${o.value}';render()"><div class="radio-dot"></div><span>${o.label[lang]}</span></div>`;
+      });
+      html += `</div>`;
+    } else if (f.type === 'chips') {
+      const arr = data[f.id] || [];
+      const hint = f.max ? T.selectMax[lang] : T.selectMulti[lang];
+      html += `<div style="font-size:.7rem;color:var(--muted);margin-bottom:.4rem">${hint}</div><div class="chips">`;
+      f.options.forEach(o => {
+        const sel = arr.includes(o.value);
+        html += `<div class="chip ${sel?'selected':''}" onclick="toggleChip('${f.id}','${o.value}',${f.max||99})"><div class="check"></div><span>${o.label[lang]}</span></div>`;
+      });
+      html += `</div>`;
+    }
+    html += `</div>`;
+  });
+
+  html += `<div class="nav-buttons">`;
+  if (currentPage > 0) html += `<button class="btn btn-outline" onclick="goPage(${currentPage-1})">${T.prev[lang]}</button>`;
+  if (currentPage < pages.length - 1) {
+    html += `<button class="btn btn-primary" onclick="goPage(${currentPage+1})">${T.next[lang]}</button>`;
+  } else {
+    html += `<button class="btn btn-gold" onclick="submitForm()">✦ ${T.submit[lang]}</button>`;
+  }
+  html += `</div></div>`;
+
+  document.getElementById('formContainer').innerHTML = html;
+}
+
+function toggleChip(id, val, max) {
+  if (!data[id]) data[id] = [];
+  const idx = data[id].indexOf(val);
+  if (idx >= 0) data[id].splice(idx, 1);
+  else if (data[id].length < max) data[id].push(val);
+  render();
+}
+
+function goPage(n) {
+  currentPage = n;
+  render();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function submitForm() {
+  console.log('Survey data:', JSON.stringify(data, null, 2));
+  const c = document.getElementById('formContainer');
+  c.innerHTML = `<div class="section thank-you"><div class="icon">🎉</div><h2>${T.thankTitle[lang]}</h2><p>${T.thankText[lang]}</p></div>`;
+  document.getElementById('progressFill').style.width = '100%';
+}
+
+render();
+</script>
+</body>
+</html>
