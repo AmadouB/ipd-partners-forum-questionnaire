@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>IPD Strategic Partners Forum 2026 — Analytics</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;900&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root {
+  --blue:#0089D0;--dark:#052a62;--light:#86B4DD;--orange:#ef7a16;--yellow:#ffd500;
+  --bg:#F2F3F5;--card:#fff;--text:#0a0a0a;--muted:#5a6a7a;--border:#D7D8DB;
+  --sidebar:#052a62;--sidebar-w:260px;--header-h:56px;
+  --glass:rgba(255,255,255,0.7);--shadow:0 2px 20px rgba(5,42,98,0.08);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden}
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--light);border-radius:3px}
+
+/* SIDEBAR */
+.sidebar{position:fixed;left:0;top:0;bottom:0;width:var(--sidebar-w);background:linear-gradient(180deg,#052a62 0%,#03194a 100%);color:#fff;z-index:200;display:flex;flex-direction:column;transition:transform .3s}
+.sidebar-brand{padding:1.2rem 1.4rem;border-bottom:1px solid rgba(255,255,255,.1)}
+.sidebar-brand h2{font-family:'Poppins',sans-serif;font-size:.95rem;font-weight:700;line-height:1.3}
+.sidebar-brand span{font-size:.65rem;opacity:.5;letter-spacing:.08em;text-transform:uppercase}
+.sidebar-nav{flex:1;padding:.8rem 0;overflow-y:auto}
+.nav-item{display:flex;align-items:center;gap:.7rem;padding:.7rem 1.4rem;cursor:pointer;font-size:.82rem;font-weight:400;color:rgba(255,255,255,.6);transition:all .2s;border-left:3px solid transparent;letter-spacing:.01em}
+.nav-item:hover{color:#fff;background:rgba(255,255,255,.05)}
+.nav-item.active{color:#fff;background:rgba(0,137,208,.2);border-left-color:var(--blue);font-weight:600}
+.nav-item .icon{font-size:1rem;width:22px;text-align:center}
+.nav-divider{height:1px;background:rgba(255,255,255,.08);margin:.6rem 1.4rem}
+.sidebar-footer{padding:1rem 1.4rem;border-top:1px solid rgba(255,255,255,.1);font-size:.68rem;opacity:.4;line-height:1.5}
+
+/* HEADER */
+.header{position:fixed;top:0;left:var(--sidebar-w);right:0;height:var(--header-h);background:var(--glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--border);z-index:150;display:flex;align-items:center;justify-content:space-between;padding:0 1.5rem}
+.header-left{display:flex;align-items:center;gap:.8rem}
+.header-left h1{font-family:'Poppins',sans-serif;font-size:.95rem;font-weight:700;color:var(--dark)}
+.status-dot{width:8px;height:8px;border-radius:50%;background:#2ecc71;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.status-text{font-size:.7rem;color:var(--muted)}
+.header-actions{display:flex;gap:.5rem;align-items:center}
+.hbtn{padding:.4rem .8rem;border:1.5px solid var(--border);border-radius:8px;background:#fff;font:600 .72rem/1 'Poppins',sans-serif;cursor:pointer;color:var(--dark);transition:all .2s;display:flex;align-items:center;gap:.35rem}
+.hbtn:hover{border-color:var(--blue);color:var(--blue);background:rgba(0,137,208,.04)}
+.hbtn.primary{background:var(--blue);color:#fff;border-color:var(--blue)}
+.hbtn.primary:hover{background:#0075b3}
+.hbtn.danger{border-color:#e74c3c;color:#e74c3c}
+.hbtn.danger:hover{background:#e74c3c;color:#fff}
+
+/* MAIN */
+.main{margin-left:var(--sidebar-w);margin-top:var(--header-h);padding:1.5rem;min-height:calc(100vh - var(--header-h))}
+
+/* CARDS */
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin-bottom:1.5rem}
+.kpi-card{background:var(--card);border-radius:14px;padding:1.2rem;box-shadow:var(--shadow);border:1px solid var(--border);position:relative;overflow:hidden;transition:transform .2s}
+.kpi-card:hover{transform:translateY(-2px)}
+.kpi-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.kpi-card:nth-child(1)::before{background:var(--blue)}
+.kpi-card:nth-child(2)::before{background:var(--orange)}
+.kpi-card:nth-child(3)::before{background:#2ecc71}
+.kpi-card:nth-child(4)::before{background:var(--dark)}
+.kpi-card:nth-child(5)::before{background:var(--yellow)}
+.kpi-card:nth-child(6)::before{background:var(--light)}
+.kpi-label{font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;font-weight:600;margin-bottom:.3rem}
+.kpi-value{font-family:'Poppins',sans-serif;font-size:1.8rem;font-weight:900;color:var(--dark);line-height:1.1}
+.kpi-sub{font-size:.72rem;color:var(--muted);margin-top:.25rem}
+
+.chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem}
+.chart-card{background:var(--card);border-radius:14px;padding:1.3rem;box-shadow:var(--shadow);border:1px solid var(--border)}
+.chart-card.full{grid-column:1/-1}
+.chart-title{font-family:'Poppins',sans-serif;font-size:.85rem;font-weight:700;color:var(--dark);margin-bottom:.8rem}
+.chart-wrap{position:relative;height:280px}
+.chart-wrap canvas{max-height:280px}
+
+/* TABLE */
+.table-controls{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center;margin-bottom:1rem}
+.filter-select{padding:.45rem .7rem;border:1.5px solid var(--border);border-radius:8px;font:.8rem 'Lato',sans-serif;background:#fff;cursor:pointer;color:var(--text);min-width:140px}
+.filter-select:focus{outline:none;border-color:var(--blue)}
+.search-input{padding:.45rem .7rem;border:1.5px solid var(--border);border-radius:8px;font:.8rem 'Lato',sans-serif;width:220px}
+.search-input:focus{outline:none;border-color:var(--blue)}
+.data-table{width:100%;border-collapse:collapse;font-size:.75rem}
+.data-table thead{position:sticky;top:0;z-index:5}
+.data-table th{background:var(--dark);color:#fff;padding:.6rem .5rem;text-align:left;font-family:'Poppins',sans-serif;font-weight:600;font-size:.68rem;text-transform:uppercase;letter-spacing:.04em;white-space:nowrap}
+.data-table td{padding:.5rem;border-bottom:1px solid var(--border);max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.data-table tr:hover td{background:rgba(0,137,208,.04)}
+.table-scroll{max-height:500px;overflow:auto;border-radius:10px;border:1px solid var(--border)}
+
+/* TABS */
+.tab-content{display:none}.tab-content.active{display:block;animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* FULLSCREEN BTN */
+.fab-fullscreen{position:fixed;bottom:1.5rem;right:1.5rem;width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--dark));color:#fff;border:none;cursor:pointer;box-shadow:0 4px 20px rgba(0,137,208,.4);z-index:300;font-size:1.1rem;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.fab-fullscreen:hover{transform:scale(1.1);box-shadow:0 6px 28px rgba(0,137,208,.5)}
+
+/* LOADING */
+.loading-overlay{position:fixed;inset:0;background:rgba(255,255,255,.85);backdrop-filter:blur(8px);z-index:999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem}
+.spinner{width:40px;height:40px;border:3px solid var(--border);border-top-color:var(--blue);border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-text{font-family:'Poppins',sans-serif;font-size:.85rem;color:var(--dark)}
+
+/* REPORT MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(5,42,98,.5);z-index:400;align-items:center;justify-content:center}
+.modal-overlay.show{display:flex}
+.modal{background:#fff;border-radius:16px;padding:2rem;max-width:800px;width:90%;max-height:85vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.2)}
+.modal h2{font-family:'Poppins',sans-serif;color:var(--dark);margin-bottom:1rem;font-size:1.1rem}
+.modal-close{float:right;background:none;border:none;font-size:1.2rem;cursor:pointer;color:var(--muted)}
+.report-section{margin-bottom:1.5rem}
+.report-section h3{font-family:'Poppins',sans-serif;font-size:.9rem;color:var(--blue);border-bottom:2px solid var(--blue);padding-bottom:.3rem;margin-bottom:.6rem}
+.report-section p,.report-section li{font-size:.82rem;line-height:1.7;color:var(--text)}
+.report-section ul{padding-left:1.2rem}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .sidebar{transform:translateX(-100%)}
+  .header,.main{margin-left:0}
+  .chart-grid{grid-template-columns:1fr}
+  :root{--sidebar-w:0px}
+}
+
+/* PRINT */
+@media print{
+  .sidebar,.header,.fab-fullscreen,.hbtn,.table-controls{display:none!important}
+  .main{margin:0;padding:1rem}
+  .kpi-card,.chart-card{break-inside:avoid}
+}
+</style>
+</head>
+<body>
+
+<!-- LOADING -->
+<div class="loading-overlay" id="loader">
+  <div class="spinner"></div>
+  <div class="loading-text">Chargement des données...</div>
+</div>
+
+<!-- SIDEBAR -->
+<nav class="sidebar">
+  <div class="sidebar-brand">
+    <h2>IPD Strategic Partners<br>Forum 2026</h2>
+    <span>Analytics Platform</span>
+  </div>
+  <div class="sidebar-nav">
+    <div class="nav-item active" onclick="showTab('dashboard')"><span class="icon">📊</span> Dashboard</div>
+    <div class="nav-item" onclick="showTab('alignment')"><span class="icon">🎯</span> Alignement Stratégique</div>
+    <div class="nav-item" onclick="showTab('programs')"><span class="icon">💉</span> Programmes Phares</div>
+    <div class="nav-item" onclick="showTab('financing')"><span class="icon">💰</span> Financement</div>
+    <div class="nav-item" onclick="showTab('engagement')"><span class="icon">🤝</span> Engagement & Risques</div>
+    <div class="nav-item" onclick="showTab('expectations')"><span class="icon">🔮</span> Attentes & Qualité</div>
+    <div class="nav-divider"></div>
+    <div class="nav-item" onclick="showTab('database')"><span class="icon">🗄️</span> Base de Données</div>
+  </div>
+  <div class="sidebar-footer">
+    Institut Pasteur de Dakar<br>
+    Pré-Forum 9 Avril 2026 · Bruxelles & Dakar
+  </div>
+</nav>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-left">
+    <h1>📡 Résultats du Questionnaire</h1>
+    <div class="status-dot" id="statusDot"></div>
+    <span class="status-text" id="statusText">Connecté</span>
+  </div>
+  <div class="header-actions">
+    <span style="font-size:.68rem;color:var(--muted)" id="lastUpdate"></span>
+    <button class="hbtn" onclick="refreshData()" id="refreshBtn">🔄 Actualiser</button>
+    <button class="hbtn primary" onclick="generateReport()">📄 Rapport</button>
+    <button class="hbtn" onclick="exportCSV()">📥 Export CSV</button>
+    <button class="hbtn danger" onclick="clearData()">🗑️ Admin: Effacer</button>
+  </div>
+</header>
+
+<!-- MAIN -->
+<div class="main" id="mainContent">
+
+  <!-- DASHBOARD -->
+  <div class="tab-content active" id="tab-dashboard">
+    <div class="kpi-grid" id="kpiGrid"></div>
+    <div class="chart-grid">
+      <div class="chart-card"><div class="chart-title">Répartition par catégorie de partenaire</div><div class="chart-wrap"><canvas id="chartCategory"></canvas></div></div>
+      <div class="chart-card"><div class="chart-title">Mode de participation</div><div class="chart-wrap"><canvas id="chartParticipation"></canvas></div></div>
+      <div class="chart-card"><div class="chart-title">Score d'alignement stratégique</div><div class="chart-wrap"><canvas id="chartAlignment"></canvas></div></div>
+      <div class="chart-card"><div class="chart-title">Top 3 Programmes Phares</div><div class="chart-wrap"><canvas id="chartPriorities"></canvas></div></div>
+    </div>
+  </div>
+
+  <!-- ALIGNEMENT -->
+  <div class="tab-content" id="tab-alignment">
+    <div class="kpi-grid" id="kpiAlignment"></div>
+    <div class="chart-grid">
+      <div class="chart-card full"><div class="chart-title">Distribution des scores d'alignement (1-5)</div><div class="chart-wrap"><canvas id="chartAlignDist"></canvas></div></div>
+      <div class="chart-card"><div class="chart-title">Alignement moyen par catégorie</div><div class="chart-wrap"><canvas id="chartAlignByCat"></canvas></div></div>
+      <div class="chart-card"><div class="chart-title">Alignement par mode de participation</div><div class="chart-wrap"><canvas id="chartAlignByPart"></canvas></div></div>
+    </div>
+  </div>
+
+  <!-- PROGRAMMES -->
+  <div class="tab-content" id="tab-programs">
+    <div class="chart-grid">
+      <div class="chart-card full"><div class="chart-title">Programmes phares sélectionnés (toutes réponses)</div><div class="chart-wrap" style="height:350px"><canvas id="chartAllPriorities"></canvas></div></div>
+      <div class="chart-card"><div class="chart-title">Priorités par catégorie de partenaire</div><div class="chart-wrap" style="height:320px"><canvas id="chartPriorByCat"></canvas></div></div>
+      <div class="chart-card"><div class="chart-title">Priorités — Fondations vs DFI vs Team Europe</div><div class="chart-wrap" style="height:320px"><canvas id="chartPriorComp"></canvas></div></div>
+    </div>
+  </div>
+
+  <!-- FINANCEMENT -->
+  <div class="tab-content" id="tab-financing">
+    <div class="kpi-grid" id="kpiFinancing"></div>
+    <div class="chart-grid">
+      <div class="chart-card"><div class="chart-title">Instruments de financement préférés</div><div class="chart-wrap"><canvas id="chartFinancing"></canvas></div></div>
+      <div class="chart-card"><div class="chart-title">Facteur critique pour MADIBA</div><div class="chart-wrap"><canvas id="chartCritical"></canvas></div></div>
+      <div class="chart-card full"><div class="chart-title">Instruments par catégorie de partenaire</div><div class="chart-wrap" style="height:320px"><canvas id="chartFinByCat"></canvas></div></div>
+    </div>
+  </div>
+
+  <!-- ENGAGEMENT -->
+  <div class="tab-content" id="tab-engagement">
+    <div class="kpi-grid" id="kpiEngagement"></div>
+    <div class="chart-grid">
+      <div class="chart-card"><div class="chart-title">Disposition à être champion</div><div class="chart-wrap"><canvas id="chartChampion"></canvas></div></div>
+      <div class="chart-card"><div class="chart-title">Risques stratégiques principaux</div><div class="chart-wrap"><canvas id="chartRisk"></canvas></div></div>
+    </div>
+  </div>
+
+  <!-- ATTENTES -->
+  <div class="tab-content" id="tab-expectations">
+    <div class="kpi-grid" id="kpiExpect"></div>
+    <div class="chart-grid">
+      <div class="chart-card"><div class="chart-title">Qualité des pre-reads</div><div class="chart-wrap"><canvas id="chartPrereads"></canvas></div></div>
+      <div class="chart-card"><div class="chart-title">Score pre-reads par catégorie</div><div class="chart-wrap"><canvas id="chartPrereadsByCat"></canvas></div></div>
+    </div>
+  </div>
+
+  <!-- BASE DE DONNÉES -->
+  <div class="tab-content" id="tab-database">
+    <div class="table-controls" id="tableControls"></div>
+    <div class="table-scroll"><table class="data-table" id="dataTable"><thead></thead><tbody></tbody></table></div>
+  </div>
+</div>
+
+<!-- FULLSCREEN FAB -->
+<button class="fab-fullscreen" onclick="toggleFullscreen()" title="Plein écran">⛶</button>
+
+<!-- REPORT MODAL -->
+<div class="modal-overlay" id="reportModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeReport()">✕</button>
+    <div id="reportContent"></div>
+    <div style="text-align:center;margin-top:1.5rem">
+      <button class="hbtn primary" onclick="printReport()">🖨️ Imprimer le rapport</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const API_URL = 'https://script.google.com/macros/s/AKfycbwY-mpbJLjlmpqCNcO70flREvLj2oSe5lHcFuandw3WVDe7TexY5LXUM_K5QKgbq-SU2g/exec';
+let DATA = [];
+let charts = {};
+let autoRefreshInterval;
+
+// LABELS
+const CAT_LABELS = {team_europe:'Team Europe',dfi:'Institution Financière',foundation:'Fondation',technical:'Agence Technique',private:'Secteur Privé',other:'Autre'};
+const PART_LABELS = {brussels:'Bruxelles',dakar:'IPD Dakar',remote:'En ligne'};
+const PRIOR_LABELS = {yf:'Fièvre Jaune',mr:'Rougeole-Rubéole',outbreak:'Vaccins Épidémiques',dx:'Diagnostics (DIATROPIX)',workforce:'Formation (CARE/STARS)',surveillance:'Surveillance (4S)',clinical:'Essais Cliniques'};
+const FIN_LABELS = {grants:'Subventions',blended:'Blended Finance',amc:'AMC / Garanties',ta:'Assistance Technique',equity:'Participation',debt:'Prêts Concessionnels'};
+const CRIT_LABELS = {market:'Accès marché',regulatory:'Réglementaire',cost:'Coûts production',workforce_cap:'Ressources humaines',governance:'Gouvernance'};
+const CHAMP_LABELS = {yes:'Oui',discussing:'En discussion',no:'Non'};
+const RISK_LABELS = {demand:'Incertitude demande',regulatory_delay:'Retards réglementaires',coordination:'Fragmentation partenaires',financial_gap:'Déficit financement',tech_transfer:'Transfert techno.'};
+const COLORS = ['#0089D0','#ef7a16','#052a62','#86B4DD','#2ecc71','#ffd500','#e74c3c','#9b59b6','#1abc9c','#34495e'];
+
+// INIT
+async function init() {
+  await refreshData();
+  autoRefreshInterval = setInterval(refreshData, 60000);
+}
+
+async function refreshData() {
+  const btn = document.getElementById('refreshBtn');
+  btn.textContent = '⏳ ...';
+  try {
+    const r = await fetch(API_URL);
+    const json = await r.json();
+    DATA = json.rows || [];
+    renderAll();
+    document.getElementById('statusDot').style.background = '#2ecc71';
+    document.getElementById('statusText').textContent = `${DATA.length} réponses`;
+    document.getElementById('lastUpdate').textContent = new Date().toLocaleTimeString('fr-FR');
+  } catch(e) {
+    document.getElementById('statusDot').style.background = '#e74c3c';
+    document.getElementById('statusText').textContent = 'Erreur connexion';
+  }
+  btn.textContent = '🔄 Actualiser';
+  document.getElementById('loader').style.display = 'none';
+}
+
+// COUNT HELPERS
+function countField(field) {
+  const c = {};
+  DATA.forEach(r => {
+    const v = r[field];
+    if (!v) return;
+    if (String(v).includes(',')) {
+      String(v).split(',').map(s=>s.trim()).forEach(s => { c[s] = (c[s]||0)+1; });
+    } else { c[v] = (c[v]||0)+1; }
+  });
+  return c;
+}
+function avgField(field, groupField) {
+  const sums = {}, counts = {};
+  DATA.forEach(r => {
+    const g = r[groupField] || 'N/A';
+    const v = parseFloat(r[field]);
+    if (isNaN(v)) return;
+    sums[g] = (sums[g]||0) + v;
+    counts[g] = (counts[g]||0) + 1;
+  });
+  const result = {};
+  Object.keys(sums).forEach(k => { result[k] = (sums[k]/counts[k]).toFixed(1); });
+  return result;
+}
+
+// RENDER ALL
+function renderAll() {
+  renderDashboard();
+  renderAlignment();
+  renderPrograms();
+  renderFinancing();
+  renderEngagement();
+  renderExpectations();
+  renderDatabase();
+}
+
+// DASHBOARD
+function renderDashboard() {
+  const n = DATA.length;
+  const cats = countField('category');
+  const avgAlign = n ? (DATA.reduce((s,r)=>s+(parseFloat(r.alignment)||0),0)/n).toFixed(1) : '—';
+  const champYes = DATA.filter(r=>r.champion==='yes').length;
+  const pctChamp = n ? Math.round(champYes/n*100) : 0;
+  const langs = countField('_lang');
+  const parts = countField('participation');
+
+  document.getElementById('kpiGrid').innerHTML = `
+    <div class="kpi-card"><div class="kpi-label">Réponses totales</div><div class="kpi-value">${n}</div><div class="kpi-sub">${Object.keys(cats).length} catégories représentées</div></div>
+    <div class="kpi-card"><div class="kpi-label">Alignement moyen</div><div class="kpi-value">${avgAlign}<span style="font-size:.9rem">/5</span></div><div class="kpi-sub">Score d'alignement stratégique</div></div>
+    <div class="kpi-card"><div class="kpi-label">Champions volontaires</div><div class="kpi-value">${champYes}</div><div class="kpi-sub">${pctChamp}% des répondants</div></div>
+    <div class="kpi-card"><div class="kpi-label">En présentiel Bruxelles</div><div class="kpi-value">${parts.brussels||0}</div><div class="kpi-sub">${parts.dakar||0} depuis Dakar · ${parts.remote||0} en ligne</div></div>
+    <div class="kpi-card"><div class="kpi-label">Réponses FR / EN</div><div class="kpi-value">${langs.fr||0} / ${langs.en||0}</div><div class="kpi-sub">Bilingue</div></div>
+    <div class="kpi-card"><div class="kpi-label">Organisations uniques</div><div class="kpi-value">${new Set(DATA.map(r=>r.org)).size}</div><div class="kpi-sub">Partenaires distincts</div></div>
+  `;
+
+  renderChart('chartCategory','doughnut', cats, CAT_LABELS);
+  renderChart('chartParticipation','doughnut', parts, PART_LABELS);
+  renderBarChart('chartAlignment', countField('alignment'), {'1':'1 ★','2':'2 ★★','3':'3 ★★★','4':'4 ★★★★','5':'5 ★★★★★'}, 'Score');
+  // Top priorities
+  const priors = countField('priorities');
+  renderBarChart('chartPriorities', priors, PRIOR_LABELS, 'Sélections');
+}
+
+// ALIGNMENT TAB
+function renderAlignment() {
+  const n = DATA.length;
+  const avgAll = n ? (DATA.reduce((s,r)=>s+(parseFloat(r.alignment)||0),0)/n).toFixed(1) : '—';
+  const hi = DATA.filter(r=>parseInt(r.alignment)>=4).length;
+  const lo = DATA.filter(r=>parseInt(r.alignment)<=2).length;
+  document.getElementById('kpiAlignment').innerHTML = `
+    <div class="kpi-card"><div class="kpi-label">Moyenne globale</div><div class="kpi-value">${avgAll}/5</div></div>
+    <div class="kpi-card"><div class="kpi-label">Alignement fort (4-5)</div><div class="kpi-value">${hi}</div><div class="kpi-sub">${n?Math.round(hi/n*100):0}%</div></div>
+    <div class="kpi-card"><div class="kpi-label">Alignement faible (1-2)</div><div class="kpi-value">${lo}</div><div class="kpi-sub">${n?Math.round(lo/n*100):0}%</div></div>
+  `;
+  renderBarChart('chartAlignDist', countField('alignment'), {'1':'1 - Pas aligné','2':'2','3':'3 - Moyen','4':'4','5':'5 - Très aligné'}, 'Répondants');
+  const avgByCat = avgField('alignment','category');
+  renderHBarChart('chartAlignByCat', avgByCat, CAT_LABELS, 'Moyenne');
+  const avgByPart = avgField('alignment','participation');
+  renderHBarChart('chartAlignByPart', avgByPart, PART_LABELS, 'Moyenne');
+}
+
+// PROGRAMS TAB
+function renderPrograms() {
+  const priors = countField('priorities');
+  renderHBarChart('chartAllPriorities', priors, PRIOR_LABELS, 'Sélections');
+  // By category - stacked
+  renderStackedByGroup('chartPriorByCat','priorities','category',PRIOR_LABELS,CAT_LABELS);
+  renderStackedByGroup('chartPriorComp','priorities','category',PRIOR_LABELS,{foundation:'Fondations',dfi:'DFI',team_europe:'Team Europe'});
+}
+
+// FINANCING TAB
+function renderFinancing() {
+  const fins = countField('financing');
+  const crits = countField('critical_factor');
+  const topFin = Object.entries(fins).sort((a,b)=>b[1]-a[1])[0];
+  const topCrit = Object.entries(crits).sort((a,b)=>b[1]-a[1])[0];
+  document.getElementById('kpiFinancing').innerHTML = `
+    <div class="kpi-card"><div class="kpi-label">Instrument #1</div><div class="kpi-value" style="font-size:1.3rem">${topFin?FIN_LABELS[topFin[0]]||topFin[0]:'—'}</div><div class="kpi-sub">${topFin?topFin[1]:0} sélections</div></div>
+    <div class="kpi-card"><div class="kpi-label">Facteur critique #1</div><div class="kpi-value" style="font-size:1.3rem">${topCrit?CRIT_LABELS[topCrit[0]]||topCrit[0]:'—'}</div><div class="kpi-sub">${topCrit?topCrit[1]:0} sélections</div></div>
+  `;
+  renderHBarChart('chartFinancing', fins, FIN_LABELS, 'Sélections');
+  renderChart('chartCritical','doughnut', crits, CRIT_LABELS);
+  renderStackedByGroup('chartFinByCat','financing','category',FIN_LABELS,CAT_LABELS);
+}
+
+// ENGAGEMENT TAB
+function renderEngagement() {
+  const champs = countField('champion');
+  const risks = countField('risk');
+  const champAreas = DATA.filter(r=>r.champion_area).map(r=>({org:r.org,area:r.champion_area}));
+  const yesCount = champs.yes||0;
+  document.getElementById('kpiEngagement').innerHTML = `
+    <div class="kpi-card"><div class="kpi-label">Prêts à être champions</div><div class="kpi-value">${yesCount}</div></div>
+    <div class="kpi-card"><div class="kpi-label">En discussion</div><div class="kpi-value">${champs.discussing||0}</div></div>
+    <div class="kpi-card"><div class="kpi-label">Domaines proposés</div><div class="kpi-value">${champAreas.length}</div></div>
+  `;
+  renderChart('chartChampion','doughnut', champs, CHAMP_LABELS);
+  renderHBarChart('chartRisk', risks, RISK_LABELS, 'Répondants');
+}
+
+// EXPECTATIONS TAB
+function renderExpectations() {
+  const n = DATA.length;
+  const avgPre = n ? (DATA.reduce((s,r)=>s+(parseFloat(r.prereads)||0),0)/n).toFixed(1) : '—';
+  const hiPre = DATA.filter(r=>parseInt(r.prereads)>=4).length;
+  document.getElementById('kpiExpect').innerHTML = `
+    <div class="kpi-card"><div class="kpi-label">Note pre-reads moyenne</div><div class="kpi-value">${avgPre}/5</div></div>
+    <div class="kpi-card"><div class="kpi-label">Satisfaction élevée (4-5)</div><div class="kpi-value">${hiPre}</div><div class="kpi-sub">${n?Math.round(hiPre/n*100):0}%</div></div>
+  `;
+  renderBarChart('chartPrereads', countField('prereads'), {'1':'1','2':'2','3':'3','4':'4','5':'5'}, 'Répondants');
+  const avgByCat = avgField('prereads','category');
+  renderHBarChart('chartPrereadsByCat', avgByCat, CAT_LABELS, 'Moyenne');
+}
+
+// DATABASE TAB
+function renderDatabase() {
+  const cols = ['org','name','category','participation','alignment','priorities','critical_factor','financing','champion','risk','prereads','_lang'];
+  const colLabels = {org:'Organisation',name:'Nom',category:'Catégorie',participation:'Participation',alignment:'Alignement',priorities:'Priorités',critical_factor:'Facteur critique',financing:'Financement',champion:'Champion',risk:'Risque',prereads:'Pre-reads',_lang:'Langue'};
+
+  let controls = `<input class="search-input" placeholder="🔍 Rechercher..." oninput="filterTable(this.value)" id="searchInput">`;
+  controls += `<select class="filter-select" onchange="filterByField('category',this.value)" id="fCat"><option value="">Toutes catégories</option>`;
+  Object.entries(CAT_LABELS).forEach(([k,v])=>{controls+=`<option value="${k}">${v}</option>`;});
+  controls += `</select>`;
+  controls += `<select class="filter-select" onchange="filterByField('participation',this.value)" id="fPart"><option value="">Tous modes</option>`;
+  Object.entries(PART_LABELS).forEach(([k,v])=>{controls+=`<option value="${k}">${v}</option>`;});
+  controls += `</select>`;
+  controls += `<select class="filter-select" onchange="filterByField('champion',this.value)" id="fChamp"><option value="">Champion: tous</option><option value="yes">Oui</option><option value="discussing">En discussion</option><option value="no">Non</option></select>`;
+  controls += `<select class="filter-select" onchange="filterByField('alignment',this.value)" id="fAlign"><option value="">Alignement: tous</option><option value="5">5 ★★★★★</option><option value="4">4 ★★★★</option><option value="3">3 ★★★</option><option value="2">2 ★★</option><option value="1">1 ★</option></select>`;
+  controls += `<span style="font-size:.75rem;color:var(--muted)" id="rowCount">${DATA.length} lignes</span>`;
+  document.getElementById('tableControls').innerHTML = controls;
+
+  let thead = '<tr>' + cols.map(c=>`<th>${colLabels[c]}</th>`).join('') + '</tr>';
+  let tbody = DATA.map((r,i) => {
+    return `<tr data-idx="${i}">` + cols.map(c => {
+      let v = r[c]||'';
+      if(c==='category') v = CAT_LABELS[v]||v;
+      if(c==='participation') v = PART_LABELS[v]||v;
+      if(c==='champion') v = CHAMP_LABELS[v]||v;
+      return `<td title="${v}">${v}</td>`;
+    }).join('') + '</tr>';
+  }).join('');
+
+  document.querySelector('#dataTable thead').innerHTML = thead;
+  document.querySelector('#dataTable tbody').innerHTML = tbody;
+}
+
+// FILTERS
+let activeFilters = {};
+function filterByField(field, val) {
+  if(val) activeFilters[field]=val; else delete activeFilters[field];
+  applyFilters();
+}
+function filterTable(q) {
+  activeFilters._search = q.toLowerCase();
+  applyFilters();
+}
+function applyFilters() {
+  const rows = document.querySelectorAll('#dataTable tbody tr');
+  let count = 0;
+  rows.forEach((tr,i) => {
+    const r = DATA[i];
+    let show = true;
+    Object.entries(activeFilters).forEach(([k,v]) => {
+      if(k==='_search') {
+        if(v && !JSON.stringify(r).toLowerCase().includes(v)) show=false;
+      } else {
+        if(r[k] != v) show=false;
+      }
+    });
+    tr.style.display = show?'':'none';
+    if(show) count++;
+  });
+  document.getElementById('rowCount').textContent = `${count} / ${DATA.length} lignes`;
+}
+
+// CHART HELPERS
+function destroyChart(id){if(charts[id]){charts[id].destroy();delete charts[id];}}
+
+function renderChart(id, type, data, labels) {
+  destroyChart(id);
+  const keys = Object.keys(data);
+  const vals = keys.map(k=>data[k]);
+  const lbls = keys.map(k=>labels[k]||k);
+  charts[id] = new Chart(document.getElementById(id), {
+    type, data: {labels:lbls, datasets:[{data:vals,backgroundColor:COLORS.slice(0,keys.length),borderWidth:0,hoverOffset:8}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{family:'Lato',size:11},padding:12,usePointStyle:true}}}}
+  });
+}
+
+function renderBarChart(id, data, labels, label) {
+  destroyChart(id);
+  const keys = Object.keys(labels);
+  const vals = keys.map(k=>data[k]||0);
+  const lbls = keys.map(k=>labels[k]);
+  charts[id] = new Chart(document.getElementById(id), {
+    type:'bar', data:{labels:lbls, datasets:[{label,data:vals,backgroundColor:COLORS[0],borderRadius:6,maxBarThickness:50}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{font:{family:'Lato'}}},x:{ticks:{font:{family:'Lato',size:10},maxRotation:45}}}}
+  });
+}
+
+function renderHBarChart(id, data, labels, label) {
+  destroyChart(id);
+  const keys = Object.keys(data);
+  const vals = keys.map(k=>parseFloat(data[k])||0);
+  const lbls = keys.map(k=>labels[k]||k);
+  charts[id] = new Chart(document.getElementById(id), {
+    type:'bar', data:{labels:lbls, datasets:[{label,data:vals,backgroundColor:COLORS.slice(0,keys.length),borderRadius:6,maxBarThickness:40}]},
+    options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{beginAtZero:true,ticks:{font:{family:'Lato'}}},y:{ticks:{font:{family:'Lato',size:11}}}}}
+  });
+}
+
+function renderStackedByGroup(id, valueField, groupField, valLabels, grpLabels) {
+  destroyChart(id);
+  const grpKeys = Object.keys(grpLabels);
+  const valKeys = Object.keys(valLabels);
+  const datasets = grpKeys.map((gk,gi) => {
+    const subset = DATA.filter(r=>r[groupField]===gk);
+    const counts = {};
+    subset.forEach(r => {
+      String(r[valueField]||'').split(',').map(s=>s.trim()).forEach(v => { counts[v]=(counts[v]||0)+1; });
+    });
+    return {label:grpLabels[gk], data:valKeys.map(vk=>counts[vk]||0), backgroundColor:COLORS[gi%COLORS.length], borderRadius:4, maxBarThickness:30};
+  });
+  charts[id] = new Chart(document.getElementById(id), {
+    type:'bar', data:{labels:valKeys.map(k=>valLabels[k]||k), datasets},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{family:'Lato',size:10},usePointStyle:true}}},scales:{x:{stacked:true,ticks:{font:{size:9}}},y:{stacked:true,beginAtZero:true}}}
+  });
+}
+
+// TAB NAVIGATION
+function showTab(id) {
+  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  event.currentTarget.classList.add('active');
+}
+
+// FULLSCREEN
+function toggleFullscreen() {
+  if(!document.fullscreenElement) document.documentElement.requestFullscreen();
+  else document.exitFullscreen();
+}
+
+// EXPORT CSV
+function exportCSV() {
+  if(!DATA.length) return alert('Aucune donnée');
+  const headers = Object.keys(DATA[0]);
+  let csv = headers.join(',')+'\n';
+  DATA.forEach(r => {
+    csv += headers.map(h => `"${String(r[h]||'').replace(/"/g,'""')}"`).join(',')+'\n';
+  });
+  const blob = new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8;'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `IPD_Forum_2026_Donnees_${new Date().toISOString().slice(0,10)}.csv`;
+  a.click();
+}
+
+// ADMIN CLEAR
+async function clearData() {
+  if(!confirm('⚠️ ATTENTION: Supprimer TOUTES les données du Google Sheet ?\n\nCette action est irréversible.')) return;
+  if(!confirm('Confirmation finale: Effacer toutes les réponses ?')) return;
+  try {
+    await fetch(API_URL, {method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({_action:'clear_all'})});
+    alert('✅ Données effacées. Actualisation...');
+    setTimeout(refreshData, 2000);
+  } catch(e) { alert('Erreur: '+e.message); }
+}
+
+// REPORT GENERATION
+function generateReport() {
+  const n = DATA.length;
+  if(!n) return alert('Aucune donnée');
+  const avgAlign = (DATA.reduce((s,r)=>s+(parseFloat(r.alignment)||0),0)/n).toFixed(1);
+  const avgPre = (DATA.reduce((s,r)=>s+(parseFloat(r.prereads)||0),0)/n).toFixed(1);
+  const cats = countField('category');
+  const priors = countField('priorities');
+  const fins = countField('financing');
+  const crits = countField('critical_factor');
+  const champs = countField('champion');
+  const risks = countField('risk');
+  const sortedPriors = Object.entries(priors).sort((a,b)=>b[1]-a[1]);
+  const sortedFins = Object.entries(fins).sort((a,b)=>b[1]-a[1]);
+  const sortedCrits = Object.entries(crits).sort((a,b)=>b[1]-a[1]);
+  const sortedRisks = Object.entries(risks).sort((a,b)=>b[1]-a[1]);
+  const champAreas = DATA.filter(r=>r.champion_area&&r.champion==='yes').map(r=>`<li><strong>${r.org}</strong>: ${r.champion_area}</li>`).join('');
+  const expectations = DATA.filter(r=>r.expectation).map(r=>`<li><strong>${r.org}</strong>: ${r.expectation}</li>`).join('');
+  const infoNeeds = DATA.filter(r=>r.info_needs).map(r=>`<li><strong>${r.org}</strong>: ${r.info_needs}</li>`).join('');
+  const comments = DATA.filter(r=>r.overall_comment).map(r=>`<li><strong>${r.org}</strong>: ${r.overall_comment}</li>`).join('');
+
+  const html = `
+    <h2 style="text-align:center;color:#052a62">📊 RAPPORT D'ANALYSE — QUESTIONNAIRE PARTENAIRES<br>
+    <span style="font-size:.85rem;color:#0089D0">IPD Strategic Partners Forum · Pré-Forum 9 Avril 2026</span></h2>
+    <p style="text-align:center;font-size:.75rem;color:#888">Généré le ${new Date().toLocaleDateString('fr-FR')} à ${new Date().toLocaleTimeString('fr-FR')} · ${n} réponses analysées</p>
+
+    <div class="report-section"><h3>1. Vue d'ensemble</h3>
+    <p><strong>${n} réponses</strong> collectées auprès de <strong>${new Set(DATA.map(r=>r.org)).size} organisations</strong> distinctes.
+    Répartition: ${Object.entries(cats).map(([k,v])=>`${CAT_LABELS[k]||k} (${v})`).join(', ')}.
+    Score d'alignement moyen: <strong>${avgAlign}/5</strong>. Note pre-reads: <strong>${avgPre}/5</strong>.</p></div>
+
+    <div class="report-section"><h3>2. Alignement Stratégique</h3>
+    <p>Le score moyen d'alignement avec la feuille de route 2026-2030 est de <strong>${avgAlign}/5</strong>.
+    <strong>${DATA.filter(r=>parseInt(r.alignment)>=4).length} répondants (${Math.round(DATA.filter(r=>parseInt(r.alignment)>=4).length/n*100)}%)</strong> attribuent un score de 4 ou 5, indiquant une forte convergence.
+    Seuls <strong>${DATA.filter(r=>parseInt(r.alignment)<=2).length}</strong> signalent un alignement faible.</p></div>
+
+    <div class="report-section"><h3>3. Programmes Phares Prioritaires</h3>
+    <p>Classement par nombre de sélections:</p>
+    <ul>${sortedPriors.map(([k,v],i)=>`<li><strong>#${i+1} ${PRIOR_LABELS[k]||k}</strong>: ${v} sélections (${Math.round(v/n*100)}%)</li>`).join('')}</ul></div>
+
+    <div class="report-section"><h3>4. Durabilité & Financement</h3>
+    <p><strong>Facteur critique #1 pour MADIBA:</strong> ${CRIT_LABELS[sortedCrits[0]?.[0]]||'—'} (${sortedCrits[0]?.[1]||0} réponses).</p>
+    <p>Instruments de financement préférés:</p>
+    <ul>${sortedFins.map(([k,v])=>`<li><strong>${FIN_LABELS[k]||k}</strong>: ${v} sélections</li>`).join('')}</ul></div>
+
+    <div class="report-section"><h3>5. Engagement & Champions</h3>
+    <p><strong>${champs.yes||0} organisations</strong> prêtes à être champions, <strong>${champs.discussing||0}</strong> en discussion.</p>
+    ${champAreas?`<p>Domaines de championnat proposés:</p><ul>${champAreas}</ul>`:''}</div>
+
+    <div class="report-section"><h3>6. Risques Stratégiques</h3>
+    <ul>${sortedRisks.map(([k,v])=>`<li><strong>${RISK_LABELS[k]||k}</strong>: ${v} répondants (${Math.round(v/n*100)}%)</li>`).join('')}</ul></div>
+
+    <div class="report-section"><h3>7. Attentes pour le Forum de Juin 2026</h3>
+    ${expectations?`<ul>${expectations}</ul>`:'<p>Aucune attente renseignée.</p>'}</div>
+
+    <div class="report-section"><h3>8. Besoins en Information Complémentaire</h3>
+    ${infoNeeds?`<ul>${infoNeeds}</ul>`:'<p>Aucun besoin renseigné.</p>'}</div>
+
+    ${comments?`<div class="report-section"><h3>9. Commentaires Libres</h3><ul>${comments}</ul></div>`:''}
+  `;
+
+  document.getElementById('reportContent').innerHTML = html;
+  document.getElementById('reportModal').classList.add('show');
+}
+
+function closeReport() { document.getElementById('reportModal').classList.remove('show'); }
+function printReport() { window.print(); }
+
+// START
+init();
+</script>
+</body>
+</html>
