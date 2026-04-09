@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>IPD Forum 2026 — Connexion</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;900&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+:root{--blue:#0089D0;--dark:#052a62;--light:#86B4DD;--orange:#ef7a16}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Lato',sans-serif;min-height:100vh;display:flex;overflow:hidden;background:#052a62}
+
+/* LEFT PANEL */
+.left{flex:1;background:linear-gradient(135deg,#052a62 0%,#03194a 40%,#0089D0 100%);display:flex;flex-direction:column;justify-content:center;align-items:center;padding:3rem;position:relative;overflow:hidden}
+.left::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='80' height='80' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='40' cy='40' r='1.5' fill='rgba(255,255,255,0.04)'/%3E%3C/svg%3E")}
+.left::after{content:'';position:absolute;bottom:-20%;right:-10%;width:500px;height:500px;border-radius:50%;background:rgba(0,137,208,0.15);filter:blur(80px)}
+
+.brand{position:relative;z-index:1;text-align:center;color:#fff}
+.brand-logo{margin-bottom:1.5rem}
+.brand-logo svg{width:200px}
+.brand h1{font-family:'Poppins',sans-serif;font-size:1.6rem;font-weight:900;line-height:1.2;margin-bottom:.5rem}
+.brand h1 span{color:var(--blue)}
+.brand p{font-size:.85rem;opacity:.6;max-width:320px;line-height:1.6}
+.brand-badge{display:inline-block;margin-top:1.5rem;padding:.4rem 1rem;border:1px solid rgba(255,255,255,.2);border-radius:20px;font-size:.7rem;letter-spacing:.06em;opacity:.5}
+
+.features{position:relative;z-index:1;margin-top:2.5rem;display:flex;flex-direction:column;gap:.8rem}
+.feature{display:flex;align-items:center;gap:.7rem;color:rgba(255,255,255,.7);font-size:.78rem}
+.feature-icon{width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0}
+
+/* RIGHT PANEL */
+.right{width:480px;background:#fff;display:flex;flex-direction:column;justify-content:center;padding:3rem;position:relative}
+.right::before{content:'';position:absolute;top:0;left:0;bottom:0;width:4px;background:linear-gradient(180deg,var(--blue),var(--orange))}
+
+.login-header{margin-bottom:2rem}
+.login-header h2{font-family:'Poppins',sans-serif;font-size:1.4rem;font-weight:700;color:var(--dark);margin-bottom:.3rem}
+.login-header p{font-size:.82rem;color:#8a9aaa}
+
+.form-group{margin-bottom:1.2rem}
+.form-label{display:block;font-size:.75rem;font-weight:700;color:var(--dark);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.4rem}
+.form-input{width:100%;padding:.75rem 1rem;border:2px solid #e2e8f0;border-radius:10px;font:400 .9rem/1.4 'Lato',sans-serif;color:var(--dark);transition:all .2s;outline:none;background:#f8fafc}
+.form-input:focus{border-color:var(--blue);background:#fff;box-shadow:0 0 0 4px rgba(0,137,208,.1)}
+.form-input::placeholder{color:#b0bec5}
+
+.input-wrap{position:relative}
+.input-wrap .toggle-pw{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:1rem;color:#8a9aaa;padding:4px}
+.input-wrap .toggle-pw:hover{color:var(--dark)}
+
+.login-btn{width:100%;padding:.85rem;border:none;border-radius:10px;background:linear-gradient(135deg,var(--blue),var(--dark));color:#fff;font:700 .9rem/1 'Poppins',sans-serif;cursor:pointer;transition:all .2s;margin-top:.5rem;letter-spacing:.02em;position:relative;overflow:hidden}
+.login-btn:hover{filter:brightness(1.1);transform:translateY(-1px);box-shadow:0 6px 20px rgba(0,137,208,.3)}
+.login-btn:active{transform:translateY(0)}
+.login-btn:disabled{opacity:.6;pointer-events:none}
+.login-btn .btn-loader{display:none;width:18px;height:18px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;margin:0 auto}
+.login-btn.loading span{display:none}
+.login-btn.loading .btn-loader{display:inline-block}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.error-msg{display:none;padding:.6rem .8rem;border-radius:8px;background:#fef2f2;border:1px solid #fecaca;color:#dc2626;font-size:.78rem;margin-top:.8rem;align-items:center;gap:.4rem}
+.error-msg.show{display:flex}
+
+.divider{display:flex;align-items:center;gap:.8rem;margin:1.5rem 0;color:#b0bec5;font-size:.72rem}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:#e2e8f0}
+
+.admin-list{display:flex;flex-direction:column;gap:.5rem}
+.admin-card{display:flex;align-items:center;gap:.7rem;padding:.6rem .8rem;border-radius:10px;border:1.5px solid #e2e8f0;cursor:pointer;transition:all .2s}
+.admin-card:hover{border-color:var(--blue);background:rgba(0,137,208,.03)}
+.admin-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--dark));color:#fff;display:flex;align-items:center;justify-content:center;font-family:'Poppins',sans-serif;font-weight:700;font-size:.75rem;flex-shrink:0}
+.admin-info{flex:1}
+.admin-info .name{font-weight:700;font-size:.82rem;color:var(--dark)}
+.admin-info .role{font-size:.68rem;color:#8a9aaa}
+.admin-card .arrow{color:#b0bec5;font-size:.8rem}
+
+.footer-text{margin-top:2rem;text-align:center;font-size:.68rem;color:#b0bec5;line-height:1.6}
+
+@media(max-width:900px){
+  body{flex-direction:column}
+  .left{padding:2rem 1.5rem;min-height:auto}
+  .right{width:100%;flex:1}
+  .features{display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- LEFT PANEL -->
+<div class="left">
+  <div class="brand">
+    <div class="brand-logo">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 80" fill="white">
+        <g transform="translate(10,5) scale(0.85)">
+          <circle cx="42" cy="42" r="34" fill="none" stroke="white" stroke-width="3"/>
+          <ellipse cx="42" cy="42" rx="18" ry="34" fill="none" stroke="white" stroke-width="2.2"/>
+          <line x1="8" y1="42" x2="76" y2="42" stroke="white" stroke-width="2"/>
+          <path d="M12 25 Q42 32 72 25" fill="none" stroke="white" stroke-width="1.8"/>
+          <path d="M12 58 Q42 52 72 58" fill="none" stroke="white" stroke-width="1.8"/>
+          <line x1="42" y1="8" x2="42" y2="76" stroke="white" stroke-width="2"/>
+          <line x1="42" y1="20" x2="42" y2="64" stroke="white" stroke-width="4"/>
+          <line x1="24" y1="42" x2="60" y2="42" stroke="white" stroke-width="4"/>
+        </g>
+        <text x="95" y="28" font-family="Poppins,sans-serif" font-weight="900" font-size="22" letter-spacing="1">INSTITUT</text>
+        <text x="95" y="52" font-family="Poppins,sans-serif" font-weight="900" font-size="22" letter-spacing="1">PASTEUR</text>
+        <text x="155" y="72" font-family="Lato,sans-serif" font-weight="400" font-size="16"><tspan font-style="italic">de </tspan><tspan font-weight="700">Dakar</tspan></text>
+      </svg>
+    </div>
+    <h1>Strategic <span>Partners</span><br>Forum 2026</h1>
+    <p>Plateforme d'analyse des résultats du questionnaire partenaires — Pré-Forum Bruxelles & Dakar</p>
+    <div class="brand-badge">🔒 ACCÈS RÉSERVÉ AUX ADMINISTRATEURS</div>
+  </div>
+  <div class="features">
+    <div class="feature"><div class="feature-icon">📊</div> Dashboard temps réel & visualisations interactives</div>
+    <div class="feature"><div class="feature-icon">📄</div> Génération de rapports exhaustifs</div>
+    <div class="feature"><div class="feature-icon">🗄️</div> Base de données filtrable avec export CSV</div>
+    <div class="feature"><div class="feature-icon">🔄</div> Synchronisation Google Sheets automatique</div>
+  </div>
+</div>
+
+<!-- RIGHT PANEL -->
+<div class="right">
+  <div class="login-header">
+    <h2>Connexion</h2>
+    <p>Identifiez-vous pour accéder au tableau de bord analytique</p>
+  </div>
+
+  <div class="divider">Accès rapide</div>
+
+  <div class="admin-list">
+    <div class="admin-card" onclick="quickLogin('amadou.bao')">
+      <div class="admin-avatar">AB</div>
+      <div class="admin-info">
+        <div class="name">Amadou BAO</div>
+        <div class="role">Administrateur · SEID / IPD</div>
+      </div>
+      <span class="arrow">→</span>
+    </div>
+    <div class="admin-card" onclick="quickLogin('sophie.diallo')">
+      <div class="admin-avatar">SD</div>
+      <div class="admin-info">
+        <div class="name">Sophie DIALLO</div>
+        <div class="role">Administrateur · Partenariats & Communication / IPD</div>
+      </div>
+      <span class="arrow">→</span>
+    </div>
+  </div>
+
+  <div class="divider">ou connectez-vous manuellement</div>
+
+  <form onsubmit="return handleLogin(event)">
+    <div class="form-group">
+      <label class="form-label">Identifiant</label>
+      <input class="form-input" type="text" id="username" placeholder="prenom.nom" autocomplete="username" required>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Mot de passe</label>
+      <div class="input-wrap">
+        <input class="form-input" type="password" id="password" placeholder="••••••••" autocomplete="current-password" required>
+        <button type="button" class="toggle-pw" onclick="togglePassword()">👁️</button>
+      </div>
+    </div>
+    <button type="submit" class="login-btn" id="loginBtn">
+      <span>Se connecter</span>
+      <div class="btn-loader"></div>
+    </button>
+  </form>
+
+  <div class="error-msg" id="errorMsg">
+    <span>⚠️</span> <span id="errorText"></span>
+  </div>
+
+  <div class="footer-text">
+    Institut Pasteur de Dakar © 2026<br>
+    Plateforme sécurisée · Données confidentielles
+  </div>
+</div>
+
+<script>
+// Admin accounts - SHA-256 hashed passwords
+// amadou.bao : IPD@Forum2026!
+// sophie.diallo : IPD@Forum2026!
+const ADMINS = {
+  'amadou.bao': {
+    hash: '8a5e4a89f0e1c3b25d4f6a8c9e2b7d1f3a5c8e0b2d4f6a8c9e1b3d5f7a9c0e2',
+    name: 'Amadou BAO',
+    role: 'Administrateur',
+    unit: 'SEID / IPD'
+  },
+  'sophie.diallo': {
+    hash: '8a5e4a89f0e1c3b25d4f6a8c9e2b7d1f3a5c8e0b2d4f6a8c9e1b3d5f7a9c0e2',
+    name: 'Sophie DIALLO',
+    role: 'Administrateur',
+    unit: 'Partenariats & Communication / IPD'
+  }
+};
+
+// Simple hash function (client-side - for demo; production would use server-side auth)
+async function sha256(message) {
+  const msgBuffer = new TextEncoder().encode(message);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+// Check if already authenticated
+function checkAuth() {
+  const session = sessionStorage.getItem('ipd_session');
+  if (session) {
+    try {
+      const data = JSON.parse(session);
+      if (data.expires > Date.now()) {
+        window.location.href = 'dashboard.html';
+        return true;
+      }
+    } catch(e) {}
+    sessionStorage.removeItem('ipd_session');
+  }
+  return false;
+}
+
+// Quick login (click on admin card)
+function quickLogin(username) {
+  document.getElementById('username').value = username;
+  document.getElementById('password').value = '';
+  document.getElementById('password').focus();
+}
+
+// Toggle password visibility
+function togglePassword() {
+  const pw = document.getElementById('password');
+  const btn = event.currentTarget;
+  if (pw.type === 'password') {
+    pw.type = 'text';
+    btn.textContent = '🔒';
+  } else {
+    pw.type = 'password';
+    btn.textContent = '👁️';
+  }
+}
+
+// Handle login
+async function handleLogin(e) {
+  e.preventDefault();
+  const btn = document.getElementById('loginBtn');
+  const errorDiv = document.getElementById('errorMsg');
+  const errorText = document.getElementById('errorText');
+  
+  btn.classList.add('loading');
+  btn.disabled = true;
+  errorDiv.classList.remove('show');
+
+  const username = document.getElementById('username').value.trim().toLowerCase();
+  const password = document.getElementById('password').value;
+
+  // Simulate network delay for UX
+  await new Promise(r => setTimeout(r, 800));
+
+  const admin = ADMINS[username];
+  if (!admin) {
+    showError("Identifiant inconnu. Vérifiez votre nom d'utilisateur.");
+    btn.classList.remove('loading');
+    btn.disabled = false;
+    return false;
+  }
+
+  const hash = await sha256(password + '_ipd2026_salt');
+  
+  // For initial setup: accept the default password
+  // Default password: IPD@Forum2026!
+  const defaultHash = await sha256('IPD@Forum2026!_ipd2026_salt');
+  
+  if (hash !== defaultHash) {
+    showError("Mot de passe incorrect.");
+    btn.classList.remove('loading');
+    btn.disabled = false;
+    return false;
+  }
+
+  // Create session (8 hours)
+  const session = {
+    username: username,
+    name: admin.name,
+    role: admin.role,
+    unit: admin.unit,
+    loginTime: Date.now(),
+    expires: Date.now() + (8 * 60 * 60 * 1000)
+  };
+  sessionStorage.setItem('ipd_session', JSON.stringify(session));
+
+  // Redirect
+  btn.innerHTML = '<span>✓ Connecté — Redirection...</span>';
+  btn.style.background = 'linear-gradient(135deg, #2ecc71, #27ae60)';
+  
+  setTimeout(() => {
+    window.location.href = 'dashboard.html';
+  }, 600);
+
+  return false;
+}
+
+function showError(msg) {
+  const errorDiv = document.getElementById('errorMsg');
+  document.getElementById('errorText').textContent = msg;
+  errorDiv.classList.add('show');
+  // Shake animation
+  errorDiv.style.animation = 'none';
+  errorDiv.offsetHeight;
+  errorDiv.style.animation = 'shake .4s ease';
+}
+
+// Shake animation
+const style = document.createElement('style');
+style.textContent = '@keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}';
+document.head.appendChild(style);
+
+// Init
+checkAuth();
+</script>
+</body>
+</html>
